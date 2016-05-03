@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- No cache during dev -->
+    <meta http-equiv="cache-control" content="no-store">
+
+    <title>Image Gallery</title>
+
+    <!-- Include stylsheet file -->
+    <link rel="stylesheet" href="css/img-gallery.css">
+    
+    <style>
+        #example-container{
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="example-container">
+        <!-- -->
+        <div id="img-gallery-viewer" ig-width="600px" ig-height="600px"></div>
+        <div id="img-gallery-thumbs" ig-width="600px" ig-height="100px"></div>
+        <div id="img-gallery-folders" ig-width="600px" ig-height="200px"></div>
+    </div>
+    <!-- Include JavaScript file -->
+    <script src="js/img-gallery.js"></script>
+</body>
+
+</html>

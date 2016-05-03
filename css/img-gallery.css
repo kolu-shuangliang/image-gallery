@@ -1,0 +1,11 @@
+#img-gallery-viewer {
+  margin: 0 auto;
+  background-color: yellow; }
+
+#img-gallery-thumbs {
+  margin: 0 auto;
+  background-color: green; }
+
+#img-gallery-folders {
+  margin: 0 auto;
+  background-color: blue; }
