@@ -2,6 +2,13 @@
 
 ## Still developing! ##
 
+### Limits ###
+Folder structure only support 1 folder depth.
+images/gallery/cake/ -> creates gallery named cake with images inside cake/ folder.
+images/gallery/flower/ -> creates gallery named flower with images inside flower/ folder.
+
+images/gallery/cake/creamcake/ -> fails.
+
 ### How to use. NOT WORKING YET, but I hope it will work like this... ###
 
 1. Put folders/images inside images/gallery
