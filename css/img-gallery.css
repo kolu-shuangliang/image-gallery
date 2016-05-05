@@ -8,4 +8,30 @@
 
 #img-gallery-folders {
   margin: 0 auto;
-  background-color: blue; }
+  overflow: auto;
+  display: table;
+  border: 1px solid black; }
+  #img-gallery-folders .folder-container {
+    float: left;
+    margin: 4px;
+    border: 1px solid deepskyblue; }
+    #img-gallery-folders .folder-container .title {
+      font-size: 16px;
+      overflow: hidden;
+      text-align: center; }
+    #img-gallery-folders .folder-container .image-container {
+      position: relative; }
+  #img-gallery-folders .folder-container:nth-child(odd) {
+    border: 1px solid lawngreen; }
+
+.ig-img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto; }
