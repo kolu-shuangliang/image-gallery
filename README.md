@@ -26,3 +26,21 @@ images/gallery/cake/creamcake/ -> fails.
 6. Include js/img-gallery.js after generated json files include.
 
 7. Create required HTML elements and set their attributes.
+
+### Generated "json" structure ###
+<pre>
+{
+    "structure": {
+        "folder1": {
+            "file1name": "file",
+            "file2name": "file",
+            "file3name": "file"
+        },
+        "folder2": {
+            "file1name": "file",
+            "file2name": "file",
+            "file3name": "file"
+        }
+    }   
+}
+</pre>
