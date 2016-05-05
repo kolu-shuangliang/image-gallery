@@ -5,8 +5,8 @@ set_time_limit( 10 * 60 );
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 // USER VARIABLES
 // Set thumnail sizes in pixels
-$thumbnail_width = 180;
-$thumbnail_height = 180;
+$thumbnail_width = 200;
+$thumbnail_height = 200;
 // Folder that contains all images.
 $galleryDir = "gallery";
 
@@ -137,7 +137,8 @@ function makeThumbnail( $directory, $image, $thumbnail_directory, $thumbnail_wid
         $old_image = $imgcreatefrom( $directory . '/' . $image );
         $new_image = imagecreatetruecolor( $thumbnail_width, $thumbnail_height );
 		
-		$background = imagecolorallocate( $new_image, 0, 0, 0 );
+		$background = imagecolorallocate( $new_image, 255, 255, 255 );
+		imagefill( $new_image, 0, 0, $background );
 		imagecolortransparent( $new_image, $background );
 		
         imagecopyresized( $new_image, $old_image, $dest_x, $dest_y, 0, 0, $new_width, $new_height, $original_width, $original_height );
