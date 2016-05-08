@@ -4,7 +4,22 @@
 
 #img-gallery-thumbs {
   margin: 0 auto;
-  background-color: green; }
+  overflow-y: hidden;
+  overflow-x: scroll; }
+  #img-gallery-thumbs .overflow-container {
+    position: relative; }
+    #img-gallery-thumbs .overflow-container .image-container {
+      position: relative;
+      float: left;
+      margin-left: 4px;
+      margin-right: 4px;
+      border-left: 1px solid black;
+      border-right: 1px solid black; }
+    #img-gallery-thumbs .overflow-container .image-container:hover {
+      margin-left: 3px;
+      margin-right: 3px;
+      border-left: 2px solid blue;
+      border-right: 2px solid blue; }
 
 #img-gallery-folders {
   margin: 0 auto;
@@ -14,15 +29,17 @@
   #img-gallery-folders .folder-container {
     float: left;
     margin: 4px;
-    border: 1px solid deepskyblue; }
+    border: 1px solid black; }
     #img-gallery-folders .folder-container .title {
-      font-size: 16px;
+      font-size: 20px;
       overflow: hidden;
-      text-align: center; }
+      text-align: center;
+      background-color: lightgrey; }
     #img-gallery-folders .folder-container .image-container {
       position: relative; }
-  #img-gallery-folders .folder-container:nth-child(odd) {
-    border: 1px solid lawngreen; }
+  #img-gallery-folders .folder-container:hover {
+    margin: 3px;
+    border: 2px solid blue; }
 
 .ig-img {
   position: absolute;
