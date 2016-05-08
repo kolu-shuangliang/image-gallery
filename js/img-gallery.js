@@ -1,15 +1,28 @@
-// Get frequently used HTML elements
+// Get img-gallery-viewer HTML element
 var imgGalleryViewer = document.getElementById('img-gallery-viewer');
+// INIT width and height. Defaults to 100% if there's no attributes in HTML elements.
+imgGalleryViewer.style.width = imgGalleryViewer.getAttribute('ig-width') || '100%';
+imgGalleryViewer.style.height = imgGalleryViewer.getAttribute('ig-height') || '100%';
+imgGalleryViewer.tabIndex = 1;
+// Get im-gallery-viewer width after init. Gets number not value with px or %
+var imgGalleryViewerWidth = imgGalleryViewer.offsetWidth;
+// Add event listener to click
+imgGalleryViewer.addEventListener( 'click', function( event ){
+    var posX = event.offsetX ? ( event.offsetX ) : event.pageX - this.offsetLeft;
+    console.log( "You clicked at: ( " + posX + " )" );
+    console.log( imgGalleryViewerWidth );
+}, false );
+
+
+// Get frequently used HTML elements
 var imgGalleryThumbs = document.getElementById('img-gallery-thumbs');
 var imgGalleryFolders = document.getElementById('img-gallery-folders');
 
 var currentThumb = 0;
 var currentMaxThumb = 0;
 
-// INIT width and height. Defaults to 100% if there's no attributes in HTML elements.
-imgGalleryViewer.style.width = imgGalleryViewer.getAttribute('ig-width') || '100%';
-imgGalleryViewer.style.height = imgGalleryViewer.getAttribute('ig-height') || '100%';
 
+// INIT width and height. Defaults to 100% if there's no attributes in HTML elements.
 imgGalleryThumbs.style.width = imgGalleryThumbs.getAttribute('ig-width') || '100%';
 imgGalleryThumbs.style.height = imgGalleryThumbs.getAttribute('ig-height') || '100%';
 
@@ -80,10 +93,9 @@ function generateGalleryFolders( parent, galleryLocation ){
 function foldersClickEvent(){
     var folder = this.getAttribute( 'folder' );
     
-    // Reset img-gallery-viewer, img-gallery-thumbs and counters
-    imgGalleryViewer.innerHTML = '';
+    // Reset img-gallery-thumbs and counters
     imgGalleryThumbs.innerHTML = '';
-    currentThumb = 0;
+    currentThumb = 1;
     currentMaxThumb = 0;
     
     // Start constructing new img-gallery-thumbs contents
@@ -97,13 +109,15 @@ function foldersClickEvent(){
             // Raise max thumb, also uses it as counter during foreach loop
             currentMaxThumb++;
             
-            // Create div container for image element
+            // Create and sets attribtues for image container div element
             var imgContainer = document.createElement( 'div' );
             imgContainer.style.width = galleryThumbWidth;
             imgContainer.style.height = galleryThumbHeight;
             imgContainer.className = 'image-container';
-            imgContainer.id = 'thumb-nro' + currentMaxThumb;
+            imgContainer.className += ' thumb-nro-' + currentMaxThumb;
             imgContainer.setAttribute( 'thumb', currentMaxThumb );
+            imgContainer.setAttribute( 'folder', folder );
+            imgContainer.setAttribute( 'file', file );
             imgContainer.tabIndex = 1;
             imgContainer.addEventListener( 'click', thumbnailClickEvent, false );
             overflowContainer.appendChild( imgContainer );
@@ -121,13 +135,24 @@ function foldersClickEvent(){
     // There's one extra "container" inside img-gallery-thumbs for creating vertical overflow
     var preview = document.createElement( 'div' );
     
+    // Simulate click on first thumnail to fill image-viewer
+    eventFire( document.querySelector( '.thumb-nro-' + ( currentThumb ) ), 'click' );
 }
 
 // Click event function for gallery thumbnails
 function thumbnailClickEvent(){
+    this.focus();
     
-    console.log( this );
+    // Reset image-viewer
+    imgGalleryViewer.innerHTML = '';
     
+    // Loads original image into image-viewer
+    var image = new Image();
+    image.className = 'ig-img';
+    image.src = galleryLocation + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
+    image.addEventListener( 'load', onLoadAppend( imgGalleryViewer, image ) );
+    
+    imgGalleryViewer.focus();
 }
 
 // Onload function that add element to target
