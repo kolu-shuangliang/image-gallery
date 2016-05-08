@@ -135,6 +135,18 @@ function onLoadAppend( target, element ){
     target.appendChild( element );
 }
 
+// Simulate event on element
+function eventFire( element, eventType ){
+    if ( element.fireEvent ) {
+        element.fireEvent( 'on' + eventType );
+    }
+    else {
+        var eventObject = document.createEvent( 'Events' );
+        eventObject.initEvent( eventType, true, false );
+        element.dispatchEvent( eventObject );
+    }
+}
+
 // Keep this recursive version for now.
     // Parent element. Should be imgGalleryFolders
     // Folder structure list. Should be folderStructure.structure from folder-structure.js
