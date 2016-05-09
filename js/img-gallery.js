@@ -1,4 +1,5 @@
-// Get img-gallery-viewer HTML element
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+// STUFFS FOR img-gallery-viewer ELEMENT
 var imgGalleryViewer = document.getElementById('img-gallery-viewer');
 // INIT width and height. Defaults to 100% if there's no attributes in HTML elements.
 imgGalleryViewer.style.width = imgGalleryViewer.getAttribute('ig-width') || '100%';
@@ -14,15 +15,25 @@ imgGalleryViewer.addEventListener( 'click', function( event ){
 }, false );
 
 
-// Get frequently used HTML elements
-var imgGalleryThumbs = document.getElementById('img-gallery-thumbs');
-var imgGalleryFolders = document.getElementById('img-gallery-folders');
 
+
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+// GLOBAL VARIABLES
+// counters for thumbnails
 var currentThumb = 0;
 var currentMaxThumb = 0;
 
+// Currently selected elements
+var selectedFolder = '';
+var selectedThumbnail = '';
 
-// INIT width and height. Defaults to 100% if there's no attributes in HTML elements.
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // 
+// FREQUENTLY USED ELEMENTS AND INIT SOME VARIABLES
+var imgGalleryThumbs = document.getElementById('img-gallery-thumbs');
+var imgGalleryFolders = document.getElementById('img-gallery-folders');
+
+// Defaults to 100% if values was not set
 imgGalleryThumbs.style.width = imgGalleryThumbs.getAttribute('ig-width') || '100%';
 imgGalleryThumbs.style.height = imgGalleryThumbs.getAttribute('ig-height') || '100%';
 
@@ -42,9 +53,6 @@ var galleryThumbHeight = imgGalleryThumbs.getAttribute('ig-thumb-height') || '20
 
 // Generate folders previews
 generateGalleryFolders( imgGalleryFolders, galleryLocation );
-
-
-
 
 function generateGalleryFolders( parent, galleryLocation ){
     
@@ -135,6 +143,13 @@ function foldersClickEvent(){
     // There's one extra "container" inside img-gallery-thumbs for creating vertical overflow
     var preview = document.createElement( 'div' );
     
+    // Changes removes old 'selected' and sets this as selected
+    if ( selectedFolder != '' ){
+        selectedFolder.className = selectedFolder.className.replace( /\bselected\b/, '' );
+    }
+    this.className += ' selected';
+    selectedFolder = this;
+    
     // Simulate click on first thumnail to fill image-viewer
     eventFire( document.querySelector( '.thumb-nro-' + ( currentThumb ) ), 'click' );
 }
@@ -153,6 +168,13 @@ function thumbnailClickEvent(){
     image.addEventListener( 'load', onLoadAppend( imgGalleryViewer, image ) );
     
     imgGalleryViewer.focus();
+    
+    // Changes removes old 'selected' and sets this as selected
+    if ( selectedThumbnail != '' ){
+        selectedThumbnail.className = selectedThumbnail.className.replace( /\bselected\b/, '' );
+    }
+    this.className += ' selected';
+    selectedThumbnail = this;
 }
 
 // Onload function that add element to target
