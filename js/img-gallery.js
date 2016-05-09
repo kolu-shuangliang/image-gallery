@@ -6,12 +6,27 @@ imgGalleryViewer.style.width = imgGalleryViewer.getAttribute('ig-width') || '100
 imgGalleryViewer.style.height = imgGalleryViewer.getAttribute('ig-height') || '100%';
 imgGalleryViewer.tabIndex = 1;
 // Get im-gallery-viewer width after init. Gets number not value with px or %
-var imgGalleryViewerWidth = imgGalleryViewer.offsetWidth;
+var imgGalleryViewerHalfWidth = imgGalleryViewer.offsetWidth / 2;
 // Add event listener to click
 imgGalleryViewer.addEventListener( 'click', function( event ){
     var posX = event.offsetX ? ( event.offsetX ) : event.pageX - this.offsetLeft;
-    console.log( "You clicked at: ( " + posX + " )" );
-    console.log( imgGalleryViewerWidth );
+    
+    // Check if clicks on left or right from middle of img-gallery-viewer
+    if( posX < imgGalleryViewerHalfWidth ){
+        // Checks if there's more thumbnails on "left"
+        if( currentThumb - 1 > 0 ){
+            eventFire( document.querySelector( '.thumb-nro-' + ( --currentThumb ) ), 'click' );
+        }
+    }
+    else{
+        // Checks if there's more thumbnails on "right"
+        if( ( currentThumb + 1 ) <= currentMaxThumb ){
+            eventFire( document.querySelector( '.thumb-nro-' + ( ++currentThumb ) ), 'click' );
+        }
+    }
+    
+    //console.log( "You clicked at: ( " + posX + " )" );
+    //console.log( imgGalleryViewerHalfWidth );
 }, false );
 
 
@@ -20,7 +35,7 @@ imgGalleryViewer.addEventListener( 'click', function( event ){
 
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // 
 // GLOBAL VARIABLES
-// counters for thumbnails
+// counters for thumbnails. Starts from 1
 var currentThumb = 0;
 var currentMaxThumb = 0;
 
