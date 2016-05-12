@@ -94,11 +94,6 @@ ImageGallery.prototype.constructHTML = function( galleryLocation, obj ){
     
 }
 
-
-var tempTest = new ImageGallery( 1 );
-tempTest.constructHTML( galleryLocation, tempTest );
-
-
 function generateGalleryFolders( parent, galleryLocation ){
     
     for( var folder in folderStructure.structure ){
