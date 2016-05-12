@@ -19,6 +19,8 @@ var ImageGallery = function( version ){
 
     this.galleryThumbWidth = 0;
     this.galleryThumbHeight = 0;
+
+    this.imgGalleryViewerHalfWidth = 0;
     
     // Counters for currently selected thumbnails and it's max value
     this.currenThumb = 0;
@@ -64,6 +66,8 @@ ImageGallery.prototype.constructHTML = function( galleryLocation ){
     
     this.imgGalleryViewer.tabIndex = 1;
     
+    this.imgGalleryViewerHalfWidth = this.imgGalleryViewer.offsetWidth / 2;
+    
     var temp = this.self;
     
     // Add click eventlistener to imgGalleryViewer
@@ -72,7 +76,7 @@ ImageGallery.prototype.constructHTML = function( galleryLocation ){
         var posX = event.offsetX ? ( event.offsetX ) : event.pageX - this.offsetLeft;
         
         // Check if clicks on left or right from middle of img-gallery-viewer
-        if( posX < ( this.offsetLeft / 2 ) ){
+        if( posX < temp.imgGalleryViewerHalfWidth ){
             // Checks if there's more thumbnails on "left"
             if( temp.currentThumb - 1 > 0 ){
                 
