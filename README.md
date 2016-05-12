@@ -11,7 +11,7 @@ images/gallery/flower/ -> creates gallery named flower with images inside flower
 
 images/gallery/cake/creamcake/ -> fails.
 
-### How to use. NOT WORKING YET, but I hope it will work like this... ###
+### Version 1. Works somehow but still working on it. ###
 
 1. Put folders/images inside images/gallery
 
@@ -23,9 +23,11 @@ images/gallery/cake/creamcake/ -> fails.
 
 5. Sets required varibles inside script tag (example in index.html).
 
-6. Include js/img-gallery.js after generated json files include.
+6. Include js/img-gallery.js after 5.
 
 7. Create required HTML elements and set their attributes.
+
+Example in index.html
 
 ### Generated "json" structure ###
 <pre>
