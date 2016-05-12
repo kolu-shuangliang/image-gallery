@@ -2,6 +2,8 @@
 
 var ImageGallery = function( version ){
     
+    this.self = this;
+    
     this.version = Number( version );
     
     // Store most used elements from DOM as variables. No need to getElementById all time.
@@ -19,10 +21,8 @@ var ImageGallery = function( version ){
     this.galleryThumbHeight = 0;
     
     // Counters for currently selected thumbnails and it's max value
-    this.counters = {
-        currenThumb: 0,
-        currentMaxThumb: 0
-    };
+    this.currenThumb = 0;
+    this.currentMaxThumb = 0;
     this.currentThumb = 0;
     this.currentMaxThumb = 0;
     
@@ -31,7 +31,7 @@ var ImageGallery = function( version ){
     this.selectedThumbnail = '';
 }
 
-ImageGallery.prototype.constructHTML = function( galleryLocation, obj ){
+ImageGallery.prototype.constructHTML = function( galleryLocation ){
     
     // Sets elements width/height differently depending on version used
     switch( this.version ){
@@ -64,6 +64,8 @@ ImageGallery.prototype.constructHTML = function( galleryLocation, obj ){
     
     this.imgGalleryViewer.tabIndex = 1;
     
+    var temp = this.self;
+    
     // Add click eventlistener to imgGalleryViewer
     this.imgGalleryViewer.addEventListener( 'click', function( event ){
         
@@ -72,17 +74,21 @@ ImageGallery.prototype.constructHTML = function( galleryLocation, obj ){
         // Check if clicks on left or right from middle of img-gallery-viewer
         if( posX < ( this.offsetLeft / 2 ) ){
             // Checks if there's more thumbnails on "left"
-            if( obj.currentThumb - 1 > 0 ){
+            if( temp.currentThumb - 1 > 0 ){
                 
-                eventFire( document.querySelector( '.thumb-nro-' +  --obj.currentThumb ), 'click' );
+                temp.currentThumb = temp.currentThumb - 1;
+                
+                eventFire( document.querySelector( '.thumb-nro-' +  temp.currentThumb ), 'click' );
                 
             }
         }
         else{
             // Checks if there's more thumbnails on "right"
-            if( ( obj.currentThumb + 1 ) <= obj.currentMaxThumb ){
+            if( ( temp.currentThumb + 1 ) <= temp.currentMaxThumb ){
                 
-                eventFire( document.querySelector( '.thumb-nro-' + ( ++obj.currentThumb ) ), 'click' );
+                temp.currentThumb = temp.currentThumb + 1;
+                
+                eventFire( document.querySelector( '.thumb-nro-' + temp.currentThumb ), 'click' );
                 
             }
         }
@@ -90,11 +96,11 @@ ImageGallery.prototype.constructHTML = function( galleryLocation, obj ){
     }, false );
     
     // Starts generating HTML
-    generateGalleryFolders( this.imgGalleryFolders, galleryLocation );
+    generateGalleryFolders( this.imgGalleryFolders, galleryLocation, this.self );
     
 }
 
-function generateGalleryFolders( parent, galleryLocation ){
+function generateGalleryFolders( parent, galleryLocation, obj ){
     
     for( var folder in folderStructure.structure ){
         
@@ -106,7 +112,7 @@ function generateGalleryFolders( parent, galleryLocation ){
         folderContainer.setAttribute( 'folder', folder );
         parent.appendChild( folderContainer );
         
-        folderContainer.addEventListener( 'click', foldersClickEvent, false );
+        folderContainer.addEventListener( 'click', function( event ){ foldersClickEvent( event, this, obj ); }, false );
         
         // Create title element for current folder
         var title = document.createElement( 'div' );
@@ -138,36 +144,36 @@ function generateGalleryFolders( parent, galleryLocation ){
 }
 
 // Click event function for folders previews
-function foldersClickEvent(){
-    var folder = this.getAttribute( 'folder' );
+function foldersClickEvent( event, self, obj ){
+    var folder = self.getAttribute( 'folder' );
     
     // Reset img-gallery-thumbs and counters
-    tempTest.imgGalleryThumbs.innerHTML = '';
-    tempTest.currentThumb = 1;
-    tempTest.currentMaxThumb = 0;
+    obj.imgGalleryThumbs.innerHTML = '';
+    obj.currentThumb = 1;
+    obj.currentMaxThumb = 0;
     
     // Start constructing new img-gallery-thumbs contents
     var overflowContainer = document.createElement( 'div' );
-    overflowContainer.style.height = tempTest.galleryThumbHeight;
+    overflowContainer.style.height = obj.galleryThumbHeight;
     overflowContainer.className = 'overflow-container';
-    tempTest.imgGalleryThumbs.appendChild( overflowContainer );
+    obj.imgGalleryThumbs.appendChild( overflowContainer );
     
     for( var file in folderStructure.structure[ folder ] ){
         if( folderStructure.structure[ folder ][ file ] == 'file' ){
             // Raise max thumb, also uses it as counter during foreach loop
-            tempTest.currentMaxThumb++;
+            obj.currentMaxThumb++;
             
             // Create and sets attribtues for image container div element
             var imgContainer = document.createElement( 'div' );
-            imgContainer.style.width = tempTest.galleryThumbWidth;
-            imgContainer.style.height = tempTest.galleryThumbHeight;
+            imgContainer.style.width = obj.galleryThumbWidth;
+            imgContainer.style.height = obj.galleryThumbHeight;
             imgContainer.className = 'image-container';
-            imgContainer.className += ' thumb-nro-' + tempTest.currentMaxThumb;
-            imgContainer.setAttribute( 'thumb', tempTest.currentMaxThumb );
+            imgContainer.className += ' thumb-nro-' + obj.currentMaxThumb;
+            imgContainer.setAttribute( 'thumb', obj.currentMaxThumb );
             imgContainer.setAttribute( 'folder', folder );
             imgContainer.setAttribute( 'file', file );
             imgContainer.tabIndex = 1;
-            imgContainer.addEventListener( 'click', thumbnailClickEvent, false );
+            imgContainer.addEventListener( 'click', function( event){ thumbnailClickEvent( event, this, obj ) }, false );
             overflowContainer.appendChild( imgContainer );
             
             var image = new Image();
@@ -177,44 +183,49 @@ function foldersClickEvent(){
         }
     }
     // Calculate overflow-container width while adding 10px left/right margin to all images
-    var tempWidth = tempTest.galleryThumbWidth.substring( 0, tempTest.galleryThumbWidth.length - 2 );
-    overflowContainer.style.width = ( tempTest.currentMaxThumb * ( Number( tempWidth ) + 10 ) ) + 'px';
+    var tempWidth = obj.galleryThumbWidth.substring( 0, obj.galleryThumbWidth.length - 2 );
+    overflowContainer.style.width = ( obj.currentMaxThumb * ( Number( tempWidth ) + 10 ) ) + 'px';
     
     // There's one extra "container" inside img-gallery-thumbs for creating vertical overflow
     var preview = document.createElement( 'div' );
     
     // Changes removes old 'selected' and sets this as selected
-    if ( tempTest.selectedFolder != '' ){
-        tempTest.selectedFolder.className = tempTest.selectedFolder.className.replace( /\bselected\b/, '' );
+    if ( obj.selectedFolder != '' ){
+        obj.selectedFolder.className = obj.selectedFolder.className.replace( /\bselected\b/, '' );
     }
-    this.className += ' selected';
-    selectedFolder = this;
+    self.className += ' selected';
+    selectedFolder = self.target;
     
     // Simulate click on first thumnail to fill image-viewer
-    eventFire( document.querySelector( '.thumb-nro-' + ( tempTest.currentThumb ) ), 'click' );
+    eventFire( document.querySelector( '.thumb-nro-' + ( obj.currentThumb ) ), 'click' );
 }
 
 // Click event function for gallery thumbnails
-function thumbnailClickEvent(){
-    this.focus();
+function thumbnailClickEvent( event, self, obj ){
+    self.focus();
     
     // Reset image-viewer
-    tempTest.imgGalleryViewer.innerHTML = '';
+    obj.imgGalleryViewer.innerHTML = '';
     
     // Loads original image into image-viewer
     var image = new Image();
     image.className = 'ig-img';
-    image.src = galleryLocation + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
-    image.addEventListener( 'load', onLoadAppend( tempTest.imgGalleryViewer, image ) );
+    image.src = galleryLocation + '/gallery/' + self.getAttribute( 'folder' ) + '/' + self.getAttribute( 'file' );
+    image.addEventListener( 'load', onLoadAppend( obj.imgGalleryViewer, image ) );
     
-    tempTest.imgGalleryViewer.focus();
+    obj.imgGalleryViewer.focus();
+    
+    obj.currentThumb = Number( self.getAttribute( 'thumb' ) );
     
     // Changes removes old 'selected' and sets this as selected
-    if ( tempTest.selectedThumbnail != '' ){
-        tempTest.selectedThumbnail.className = tempTest.selectedThumbnail.className.replace( /\bselected\b/, '' );
+    if ( obj.selectedThumbnail != '' ){
+        obj.selectedThumbnail.className = obj.selectedThumbnail.className.replace( /\bselected\b/, '' );
     }
-    this.className += ' selected';
-    tempTest.selectedThumbnail = this;
+    
+    self.className += ' selected';
+    obj.selectedThumbnail = self;
+    
+    
 }
 
 // Onload function that add element to target
