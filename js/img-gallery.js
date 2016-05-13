@@ -61,13 +61,17 @@ ImageGallery.prototype.constructHTML = function( galleryLocation ){
             
             break;
         case 2:
+            this.imgGalleryViewer.style.width = '100%';
+            this.imgGalleryViewer.style.height = '100%';
             
-            console.log( 'width: ' + this.imgGalleryFolders.offsetWidth );
+            this.imgGalleryThumbs.style.width = '100%';
+            this.imgGalleryThumbs.style.height = '100%';
+
+            this.imgGalleryFolders.style.width = '100%';
+            this.imgGalleryFolders.style.height = '100%';
             
             this.folderTitleWidth = Number( ( this.imgGalleryFolders.offsetWidth ) / Number( this.imgGalleryFolders.getAttribute( 'ig-fpr' ) ) ) - 10;
             this.folderTitleHeight = 40;
-            
-            console.log( 'calculated width: ' + this.folderTitleWidth );
             
             this.folderThumbWidth =  this.folderTitleWidth;
             this.folderThumbHeight = this.folderTitleWidth;
