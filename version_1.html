@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="cache-control" content="no-store">
 
-    <title>Image Gallery - version 2</title>
+    <title>Image Gallery - version 1</title>
 
     <!-- Include image-gallery stylsheet file -->
     <link rel="stylesheet" href="css/img-gallery.css">
@@ -16,47 +16,32 @@
     <script src="images/folder-structure.js"></script>
     
     <style>
-        #example-container-viewer{
+        #example-container{
             margin: 0 auto;
-            width: 600px;
-            height: 600px;
-            
-        }
-        #example-container-thumbs{
-            margin: 0 auto;
-            width: 1000px;
-            height: 200px;
-        }
-        #example-container-folders{
-            margin: 0 auto;
-            width: 840px;
-            overflow: auto;
+            max-width: 1000px;
         }
     </style>
 </head>
 
 <body>
-    <div id="example-container-viewer">
+    <div id="example-container">
         <!-- Required image-gallery HTML elements -->
         <!-- image-gallery VIEWER -->
-        <div id="img-gallery-viewer" tabindex="1"></div>
-    </div>
-    
-    <hr /><h1>Selected Gallery</h1><hr />
+        <div id="img-gallery-viewer" tabindex="1" ig-width="600" ig-height="600"></div>
         
-    <div id="example-container-thumbs">
+        <hr /><h1>Selected Gallery</h1><hr />
         <!-- image-gallery GALLERY THUMBNAILS -->
-        <div id="img-gallery-thumbs"></div>
-    </div>
-    
-    <hr /><h1>Galleries</h1><hr />
-    
-    <div id="example-container-folders">
+        <div id="img-gallery-thumbs" ig-width="1000" ig-height="200" ig-thumb-width="200" ig-thumb-height="200" ></div>
+        
+        
+        <hr /><h1>Galleries</h1><hr />
+        
         <!-- image-gallery FOLDERS -->
-        <!-- ig-fpr is folders per each row -->
-        <div id="img-gallery-folders" ig-fpr="4" ></div>
+        <!-- width require 10px extra for each folder in a single row -->
+        <!-- 3x 200 width folder in row means 630, 4x 200 width folder in row means 840 -->
+        <!-- height is combined from ig-title-height and ig-thumb-height -->
+        <div id="img-gallery-folders" ig-width="840" ig-title-width="200" ig-title-height="40" ig-thumb-width="200" ig-thumb-height="200"></div>
     </div>
-    
     <!-- Sets required variable. Location of 'gallery' folder. In this case it's located inside 'images' folder -->
     <!-- Create Oobject ImageGallery with version wanted as parameter -->
     <!-- Construct gallery by using constructHTML function -->
@@ -64,7 +49,7 @@
         
         var galleryLocation = "images";
         
-        var tempTest = new ImageGallery( 2 );
+        var tempTest = new ImageGallery( 1 );
         tempTest.constructHTML( galleryLocation );
         
     </script>

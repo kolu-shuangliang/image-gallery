@@ -35,9 +35,12 @@ var ImageGallery = function( version ){
 
 ImageGallery.prototype.constructHTML = function( galleryLocation ){
     
+    console.log( 'constructHTML: version-' + this.version );
+    
     // Sets elements width/height differently depending on version used
     switch( this.version ){
         case 1:
+        
             this.imgGalleryViewer.style.width = this.imgGalleryViewer.getAttribute('ig-width') + 'px';
             this.imgGalleryViewer.style.height = this.imgGalleryViewer.getAttribute('ig-height') + 'px';
             
@@ -47,19 +50,30 @@ ImageGallery.prototype.constructHTML = function( galleryLocation ){
             this.imgGalleryFolders.style.width = this.imgGalleryFolders.getAttribute('ig-width') + 'px';
             this.imgGalleryFolders.style.height = this.imgGalleryFolders.getAttribute('ig-height') + 'px';
             
-            this.folderTitleWidth = this.imgGalleryFolders.getAttribute('ig-title-width') + 'px';
-            this.folderTitleHeight = this.imgGalleryFolders.getAttribute('ig-title-height') + 'px';
+            this.folderTitleWidth = Number( this.imgGalleryFolders.getAttribute('ig-title-width') );
+            this.folderTitleHeight = Number( this.imgGalleryFolders.getAttribute('ig-title-height') );
 
-            this.folderThumbWidth = this.imgGalleryFolders.getAttribute('ig-thumb-width') + 'px';
-            this.folderThumbHeight = this.imgGalleryFolders.getAttribute('ig-thumb-height') + 'px';
+            this.folderThumbWidth = Number( this.imgGalleryFolders.getAttribute('ig-thumb-width') );
+            this.folderThumbHeight = Number( this.imgGalleryFolders.getAttribute('ig-thumb-height') );
 
-            this.galleryThumbWidth = this.imgGalleryThumbs.getAttribute('ig-thumb-width') + 'px';
-            this.galleryThumbHeight = this.imgGalleryThumbs.getAttribute('ig-thumb-height') + 'px';
+            this.galleryThumbWidth = Number( this.imgGalleryThumbs.getAttribute('ig-thumb-width') );
+            this.galleryThumbHeight = Number( this.imgGalleryThumbs.getAttribute('ig-thumb-height') );
             
             break;
         case 2:
-        
-            console.log( 'constructHTML: version-' + this.version );
+            
+            console.log( 'width: ' + this.imgGalleryFolders.offsetWidth );
+            
+            this.folderTitleWidth = Number( ( this.imgGalleryFolders.offsetWidth ) / Number( this.imgGalleryFolders.getAttribute( 'ig-fpr' ) ) ) - 10;
+            this.folderTitleHeight = 40;
+            
+            console.log( 'calculated width: ' + this.folderTitleWidth );
+            
+            this.folderThumbWidth =  this.folderTitleWidth;
+            this.folderThumbHeight = this.folderTitleWidth;
+            
+            this.galleryThumbWidth = this.imgGalleryThumbs.offsetHeight;
+            this.galleryThumbHeight = this.galleryThumbWidth;
             
             break;
     }
@@ -109,8 +123,8 @@ function generateGalleryFolders( parent, galleryLocation, obj ){
         // Create new div container for folder and set it's attributes
         var folderContainer = document.createElement( 'div' );
         folderContainer.className = 'folder-container';
-        folderContainer.style.width = tempTest.folderThumbWidth;
-        folderContainer.style.height = tempTest.folderTitleHeight + tempTest.folderThumbHeight;
+        folderContainer.style.width = tempTest.folderTitleWidth + 'px';
+        folderContainer.style.height = ( tempTest.folderTitleHeight + tempTest.folderThumbHeight ) + 'px';
         folderContainer.setAttribute( 'folder', folder );
         parent.appendChild( folderContainer );
         
@@ -119,8 +133,8 @@ function generateGalleryFolders( parent, galleryLocation, obj ){
         // Create title element for current folder
         var title = document.createElement( 'div' );
         title.style.width = tempTest.folderThumbWidth;
-        title.style.height = tempTest.folderTitleHeight;
-        title.style.lineHeight = tempTest.folderTitleHeight;
+        title.style.height = tempTest.folderTitleHeight + 'px';
+        title.style.lineHeight = tempTest.folderTitleHeight + 'px';
         title.className = 'title';
         title.innerHTML = folder;
         title.title = folder;
@@ -128,8 +142,8 @@ function generateGalleryFolders( parent, galleryLocation, obj ){
         
         // Create image container for current folder
         var imgContainer = document.createElement( 'div' );
-        imgContainer.style.width = tempTest.folderThumbWidth;
-        imgContainer.style.height = tempTest.folderThumbHeight;
+        imgContainer.style.width = tempTest.folderThumbWidth + 'px';
+        imgContainer.style.height = tempTest.folderThumbHeight + 'px';
         imgContainer.className = 'image-container';
         folderContainer.appendChild( imgContainer );
         
@@ -156,10 +170,11 @@ function foldersClickEvent( event, self, obj ){
     
     // Start constructing new img-gallery-thumbs contents
     var overflowContainer = document.createElement( 'div' );
-    overflowContainer.style.height = obj.galleryThumbHeight;
+    overflowContainer.style.height = obj.galleryThumbHeight + 'px';
     overflowContainer.className = 'overflow-container';
     obj.imgGalleryThumbs.appendChild( overflowContainer );
     
+    // Generate thumnail element for all images inside folder
     for( var file in folderStructure.structure[ folder ] ){
         if( folderStructure.structure[ folder ][ file ] == 'file' ){
             // Raise max thumb, also uses it as counter during foreach loop
@@ -167,8 +182,8 @@ function foldersClickEvent( event, self, obj ){
             
             // Create and sets attribtues for image container div element
             var imgContainer = document.createElement( 'div' );
-            imgContainer.style.width = obj.galleryThumbWidth;
-            imgContainer.style.height = obj.galleryThumbHeight;
+            imgContainer.style.width = obj.galleryThumbWidth + 'px';
+            imgContainer.style.height = obj.galleryThumbHeight + 'px';
             imgContainer.className = 'image-container';
             imgContainer.className += ' thumb-nro-' + obj.currentMaxThumb;
             imgContainer.setAttribute( 'thumb', obj.currentMaxThumb );
@@ -184,9 +199,8 @@ function foldersClickEvent( event, self, obj ){
             image.addEventListener( 'load', onLoadAppend( imgContainer, image ) );
         }
     }
-    // Calculate overflow-container width while adding 10px left/right margin to all images
-    var tempWidth = obj.galleryThumbWidth.substring( 0, obj.galleryThumbWidth.length - 2 );
-    overflowContainer.style.width = ( obj.currentMaxThumb * ( Number( tempWidth ) + 10 ) ) + 'px';
+    // Calculate overflow-container width while adding total of 10px left/right margin to all images
+    overflowContainer.style.width = ( obj.currentMaxThumb * ( obj.galleryThumbWidth + 10 ) ) + 'px';
     
     // There's one extra "container" inside img-gallery-thumbs for creating vertical overflow
     var preview = document.createElement( 'div' );
