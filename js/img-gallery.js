@@ -206,6 +206,7 @@ function foldersClickEvent( event, self, obj ){
 
 // Click event function for gallery thumbnails
 function thumbnailClickEvent( event, self, obj ){
+    // TODO - Moves vertical scroll to this instead of focus()
     self.focus();
     
     // Reset image-viewer
@@ -217,6 +218,7 @@ function thumbnailClickEvent( event, self, obj ){
     image.src = galleryLocation + '/gallery/' + self.getAttribute( 'folder' ) + '/' + self.getAttribute( 'file' );
     image.addEventListener( 'load', onLoadAppend( obj.imgGalleryViewer, image ) );
     
+    // TODO - Scrolls to viewer instead of focus()
     obj.imgGalleryViewer.focus();
     
     obj.currentThumb = Number( self.getAttribute( 'thumb' ) );
