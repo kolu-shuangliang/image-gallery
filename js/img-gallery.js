@@ -64,8 +64,6 @@ ImageGallery.prototype.constructHTML = function( galleryLocation ){
             break;
     }
     
-    this.imgGalleryViewer.tabIndex = 1;
-    
     this.imgGalleryViewerHalfWidth = this.imgGalleryViewer.offsetWidth / 2;
     
     var temp = this.self;
