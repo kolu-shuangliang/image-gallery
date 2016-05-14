@@ -178,7 +178,7 @@ var ImageGallery = function(){
                                 gallery.selected.className = gallery.selected.className.replace( /\bselected\b/, '' );
                             }
                             
-                            self.className += ' selected';
+                            this.className += ' selected';
                             gallery.selected = this;
                         }, false );
                         
