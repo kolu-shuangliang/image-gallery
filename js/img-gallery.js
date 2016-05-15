@@ -88,6 +88,7 @@ var ImageGallery = function(){
         
         // Add eventlistener to viewer
         viewer.dom.addEventListener( 'click', function( event ){
+            event.preventDefault();
             // Only performs click event if user have selected gallery from folders
             // gallery.current will be initialized when user selectes gallery
             if( gallery.current != null ){
@@ -125,6 +126,8 @@ var ImageGallery = function(){
             
             // Adds click eventlistener to img-gallery-folders
             folderContainer.addEventListener( 'click', function( event ){
+                event.preventDefault();
+                
                 var clickedFolder = this.getAttribute( 'folder' );
                 
                 // Reset img-gallery-thumbs contents and counters
@@ -156,8 +159,8 @@ var ImageGallery = function(){
                         imgContainer.tabIndex = 1;
                         
                         imgContainer.addEventListener( 'click', function( event){
-                            // TODO - Moves vertical scroll to this instead of focus()
-                            this.focus();
+                            event.preventDefault();
+                            
                             
                             // Reset img-gallery-viewer
                             viewer.dom.innerHTML = '';
