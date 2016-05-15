@@ -156,11 +156,11 @@ var ImageGallery = function(){
                         imgContainer.setAttribute( 'thumb', gallery.max );
                         imgContainer.setAttribute( 'folder', clickedFolder );
                         imgContainer.setAttribute( 'file', file );
-                        imgContainer.tabIndex = 1;
                         
                         imgContainer.addEventListener( 'click', function( event){
                             event.preventDefault();
                             
+                            this.scrollIntoView();
                             
                             // Reset img-gallery-viewer
                             viewer.dom.innerHTML = '';
@@ -171,8 +171,7 @@ var ImageGallery = function(){
                             image.addEventListener( 'load', onLoadAppend( viewer.dom, image ) );
                             image.src = location + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
                             
-                            // TODO - Scrolls to viewer instead of focus()
-                            viewer.dom.focus();
+                            viewer.dom.scrollIntoView();
                             
                             gallery.current = Number( this.getAttribute( 'thumb' ) );
                             
