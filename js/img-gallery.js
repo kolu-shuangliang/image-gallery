@@ -131,7 +131,9 @@ var ImageGallery = function(){
                 var clickedFolder = this.getAttribute( 'folder' );
                 
                 // Reset img-gallery-thumbs contents and counters
-                gallery.dom.innerHTML = '';
+                while( gallery.dom.firstChild ){
+                    gallery.dom.removeChild( gallery.dom.firstChild );
+                }
                 gallery.current = 1;
                 gallery.max = 0;
                 
@@ -163,7 +165,9 @@ var ImageGallery = function(){
                             this.scrollIntoView();
                             
                             // Reset img-gallery-viewer
-                            viewer.dom.innerHTML = '';
+                            while( viewer.dom.firstChild ){
+                                viewer.dom.removeChild( viewer.dom.firstChild );
+                            }
                             
                             // Loads original image into image-viewer
                             var image = new Image();
