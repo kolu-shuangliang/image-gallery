@@ -165,34 +165,7 @@ var ImageGallery = function(){
                         imgContainer.setAttribute( 'folder', clickedFolder );
                         imgContainer.setAttribute( 'file', file );
                         
-                        imgContainer.addEventListener( 'click', function( event){
-                            event.preventDefault();
-                            
-                            this.scrollIntoView();
-                            
-                            // Reset img-gallery-viewer
-                            while( viewer.dom.firstChild ){
-                                viewer.dom.removeChild( viewer.dom.firstChild );
-                            }
-                            
-                            // Loads original image into image-viewer
-                            var image = new Image();
-                            image.className = 'ig-img';
-                            image.addEventListener( 'load', onLoadAppend( viewer.dom, image ) );
-                            image.src = location + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
-                            
-                            viewer.dom.scrollIntoView();
-                            
-                            gallery.current = Number( this.getAttribute( 'thumb' ) );
-                            
-                            // Changes removes old 'selected' and sets this as selected
-                            if ( gallery.selected != null ){
-                                gallery.selected.className = gallery.selected.className.replace( /\bselected\b/, '' );
-                            }
-                            
-                            this.className += ' selected';
-                            gallery.selected = this;
-                        }, false );
+                        imgContainer.addEventListener( 'click', thumbsClickEvent, false );
                         
                         overflowContainer.appendChild( imgContainer );
                         
@@ -249,6 +222,38 @@ var ImageGallery = function(){
             }
         }
     }
+    
+    // Click event function for thumbnails in img-gallery-thumbs
+    // Those elements are generated when user clicks on thumbnails in img-gallery-folders
+    function thumbsClickEvent( event ){
+        event.preventDefault();
+                            
+        this.scrollIntoView();
+        
+        // Reset img-gallery-viewer
+        while( viewer.dom.firstChild ){
+            viewer.dom.removeChild( viewer.dom.firstChild );
+        }
+        
+        // Loads original image into image-viewer
+        var image = new Image();
+        image.className = 'ig-img';
+        image.addEventListener( 'load', onLoadAppend( viewer.dom, image ) );
+        image.src = location + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
+        
+        viewer.dom.scrollIntoView();
+        
+        gallery.current = Number( this.getAttribute( 'thumb' ) );
+        
+        // Changes removes old 'selected' and sets this as selected
+        if ( gallery.selected != null ){
+            gallery.selected.className = gallery.selected.className.replace( /\bselected\b/, '' );
+        }
+        
+        this.className += ' selected';
+        gallery.selected = this;
+    }
+    
     // Onload function that add element to target
     function onLoadAppend( target, element ){
         target.appendChild( element );
