@@ -1,5 +1,7 @@
 var ImageGallery = function(){
-    
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    // VARIABLES
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     var version = null;
     var location = null;
     
@@ -25,7 +27,9 @@ var ImageGallery = function(){
         max: null,
         selected: null
     }
-    
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    // PUBLIC FUNCTIONS
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     function init( galleryVersion, galleryLocation ){
         
         console.log( 'Initializing Image Gallery elements!' );
@@ -112,9 +116,11 @@ var ImageGallery = function(){
         // Generate DOM content for img-gallery-folders
         generateImageGallery();
     }
-    
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    // PRIVATE FUNCTIONS
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    // Generates image gallery elements.
     function generateImageGallery(){
-        
         for( var key in folderStructure.structure ){
             // Create container element for this folder
             var folderContainer = document.createElement( 'div' );
@@ -243,12 +249,10 @@ var ImageGallery = function(){
             }
         }
     }
-    
     // Onload function that add element to target
     function onLoadAppend( target, element ){
         target.appendChild( element );
     }
-
     // Simulate event on element
     function eventFire( element, eventType ){
         if ( element.fireEvent ) {
@@ -260,30 +264,12 @@ var ImageGallery = function(){
             element.dispatchEvent( eventObject );
         }
     }
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+    // RETURN
+    // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     
+    // Public functions needs to be returned
     return {
         init: init
     }
 }();
-
-// Keep this recursive version for now.
-    // Parent element. Should be imgGalleryFolders
-    // Folder structure list. Should be folderStructure.structure from folder-structure.js
-    // Gallery location. Should be variable 'galleryLocation' set before this script file. it's "image" in this example
-    // Current folder. Should start with "gallery"
-/*
-function generateGalleryFolders( parent, list, galleryLocation, location ){
-    // Loops through all "files" in current location
-    var counter = 0;
-    for( var key in list ){
-        if( list.hasOwnProperty( key ) ){
-            if( list[ key ] === 'file' ){
-                console.log( 'file' );
-            }
-            else{
-                console.log( 'folder' );
-            }
-        }
-    }
-}
-*/
