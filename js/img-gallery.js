@@ -66,14 +66,6 @@ var ImageGallery = function(){
                 break;
                 
             case 2:
-                // Version 2 inherit width/height from parent elements
-                viewer.dom.style.width = '100%';
-                viewer.dom.style.height = '100%';
-                gallery.dom.style.width = '100%';
-                gallery.dom.style.height = '100%';
-                folder.dom.style.width = '100%';
-                folder.dom.style.height = '100%';
-                
                 // Calculate width/height. Thumbnails width/height ratio are 1:1
                 folder.titleWidth = Number( ( folder.dom.offsetWidth ) / Number( folder.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
                 folder.titleHeight = 40;
@@ -164,7 +156,7 @@ var ImageGallery = function(){
                         imgContainer.setAttribute( 'thumb', gallery.max );
                         imgContainer.setAttribute( 'folder', clickedFolder );
                         imgContainer.setAttribute( 'file', file );
-                        
+                        // Adds event listener to click event
                         imgContainer.addEventListener( 'click', thumbsClickEvent, false );
                         
                         overflowContainer.appendChild( imgContainer );
@@ -270,10 +262,8 @@ var ImageGallery = function(){
         }
     }
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-    // RETURN
+    // RETURN - Public functions needs to be returned
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-    
-    // Public functions needs to be returned
     return {
         init: init
     }
