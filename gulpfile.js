@@ -6,7 +6,10 @@ var browserSync = require('browser-sync').create();
 gulp.task('default', ['styles'], function () {
 
     browserSync.init({
-        server: './'
+        server: {
+            baseDir: './',
+            index: 'version_2.html'
+        }
     });
 
     gulp.watch('sass/**/*.scss', ['styles'])
