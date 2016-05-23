@@ -62,11 +62,9 @@ var ImageGallery = function(){
                 folder.thumbHeight = Number( folder.dom.getAttribute('ig-thumb-height') );
                 gallery.width = Number( gallery.dom.getAttribute('ig-thumb-width') );
                 gallery.height = Number( gallery.dom.getAttribute('ig-thumb-height') );
-                
                 break;
                 
             case 2:
-                
                 // Calculate width/height. Thumbnails width/height ratio are 1:1
                 folder.titleWidth = Number( ( folder.dom.offsetWidth ) / Number( folder.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
                 folder.titleHeight = 40;
@@ -76,7 +74,18 @@ var ImageGallery = function(){
                 
                 gallery.height = gallery.dom.offsetHeight;
                 gallery.width = gallery.height;
+                break;
                 
+            case 3:
+                // Calculate width/height. Thumbnails width/height ratio are 1:1
+                folder.titleWidth = Number( ( folder.dom.offsetWidth ) / Number( folder.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
+                folder.titleHeight = 40;
+                
+                folder.thumbWidth =  folder.titleWidth;
+                folder.thumbHeight = folder.titleWidth;
+                // Fixed 200px for now.
+                gallery.height = 200;
+                gallery.width = 200;
                 break;
         }
         
@@ -126,6 +135,12 @@ var ImageGallery = function(){
             // Adds click eventlistener to img-gallery-folders
             folderContainer.addEventListener( 'click', function( event ){
                 event.preventDefault();
+                
+                if( version === 3 ){
+                    viewer.dom.style.display = 'block';
+                    viewer.widthHalf = viewer.dom.offsetWidth / 2;
+                    gallery.dom.style.display = 'block';
+                }
                 
                 var clickedFolder = this.getAttribute( 'folder' );
                 
