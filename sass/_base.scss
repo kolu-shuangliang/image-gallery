@@ -1,0 +1,82 @@
+#img-gallery-viewer{
+    margin: 0 auto;
+    position: relative;
+    border: 1px solid black;
+}
+
+#img-gallery-thumbs{
+    margin: 0 auto;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    
+    .overflow-container{
+        position: relative;
+        
+        .image-container{
+            position: relative;
+            float: left;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        
+        .image-container:not(.selected):hover{
+            margin-left: 3px;
+            margin-right: 3px;
+            border-left: 2px solid black;
+            border-right: 2px solid black;
+        }
+        
+        .selected{
+            margin-left: 2px;
+            margin-right: 2px;
+            border-left: 3px solid cornflowerblue;
+            border-right: 3px solid cornflowerblue;
+        }
+    }
+}
+
+#img-gallery-folders{
+    margin: 0 auto;
+    overflow: auto;
+    display: table;
+    
+    .folder-container{
+        float: left;
+        margin: 4px;
+        border: 1px solid black;
+        
+        .title{
+            font-size: 20px;
+            overflow: hidden;
+            text-align: center;
+            background-color: lightgrey;
+        }
+        
+        .image-container{
+            position: relative;
+        }
+    }
+    
+    .folder-container:not(.selected):hover{
+        margin: 3px;
+        border: 2px solid black;
+    }
+    
+    .selected{
+        margin: 2px;
+        border: 3px solid cornflowerblue;
+    }
+}
+
+.ig-img{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
