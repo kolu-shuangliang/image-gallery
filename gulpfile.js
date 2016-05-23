@@ -8,7 +8,7 @@ gulp.task('default', ['styles'], function () {
     browserSync.init({
         server: {
             baseDir: './',
-            index: 'version_2.html'
+            index: 'version_3.html'
         }
     });
 

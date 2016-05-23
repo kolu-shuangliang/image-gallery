@@ -66,6 +66,7 @@ var ImageGallery = function(){
                 break;
                 
             case 2:
+                
                 // Calculate width/height. Thumbnails width/height ratio are 1:1
                 folder.titleWidth = Number( ( folder.dom.offsetWidth ) / Number( folder.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
                 folder.titleHeight = 40;
@@ -200,6 +201,7 @@ var ImageGallery = function(){
             imgContainer.style.width = folder.thumbWidth + 'px';
             imgContainer.style.height = folder.thumbHeight + 'px';
             imgContainer.className = 'image-container';
+            imgContainer.title = key;
             folderContainer.appendChild( imgContainer );
             
             // Create image for this folder
