@@ -20,7 +20,8 @@
   overflow-y: hidden;
   overflow-x: scroll; }
   #img-gallery-thumbs .overflow-container {
-    position: relative; }
+    position: relative;
+    background-color: lightgrey; }
     #img-gallery-thumbs .overflow-container .image-container {
       position: relative;
       float: left;
@@ -43,13 +44,12 @@
   display: table; }
   #img-gallery-folders .folder-container {
     float: left;
-    margin: 4px;
-    border: 1px solid black; }
+    margin: 5px;
+    background-color: lightgrey; }
     #img-gallery-folders .folder-container .title {
       font-size: 20px;
       overflow: hidden;
-      text-align: center;
-      background-color: lightgrey; }
+      text-align: center; }
     #img-gallery-folders .folder-container .image-container {
       position: relative; }
   #img-gallery-folders .folder-container:not(.selected):hover {

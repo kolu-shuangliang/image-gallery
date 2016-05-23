@@ -5,14 +5,13 @@
     
     .folder-container{
         float: left;
-        margin: 4px;
-        border: 1px solid black;
+        margin: 5px;
+        background-color: lightgrey;
         
         .title{
             font-size: 20px;
             overflow: hidden;
             text-align: center;
-            background-color: lightgrey;
         }
         
         .image-container{
