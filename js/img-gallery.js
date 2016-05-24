@@ -91,9 +91,6 @@ var ImageGallery = function(){
                 
                 folder.thumbWidth =  folder.titleWidth;
                 folder.thumbHeight = folder.titleWidth;
-                // Fixed 200px for now.
-                gallery.height = 200;
-                gallery.width = 200;
                 break;
         }
         
@@ -149,6 +146,11 @@ var ImageGallery = function(){
                     gallery.dom.style.display = 'block';
                     document.getElementById( 'img-gallery-close' ).style.display = 'block';
                     document.body.classList.toggle( 'no-scroll' );
+                    
+                    // Gets thumbnails width/height from img-gallery-thumbs height.
+                    // Which is 20% of screen height.
+                    gallery.height = gallery.dom.offsetHeight;
+                    gallery.width = gallery.height;
                 }
                 
                 var clickedFolder = this.getAttribute( 'folder' );
