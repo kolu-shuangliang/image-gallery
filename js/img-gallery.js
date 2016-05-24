@@ -99,7 +99,7 @@ var ImageGallery = function(){
             // gallery.current will be initialized when user selectes gallery
             if( gallery.current != null ){
                 // Get click position
-                var posX = event.offsetX ? ( event.offsetX ) : event.pageX - this.offsetLeft;
+                var posX = event.pageX - this.offsetLeft;
                 // Check if click position is on left or right side of viewer
                 // Also checks if there's more images to left/right by using gallery.current
                 if( posX < viewer.widthHalf ){
