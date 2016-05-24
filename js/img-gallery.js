@@ -77,6 +77,14 @@ var ImageGallery = function(){
                 break;
                 
             case 3:
+                // Adds click event listener to close button. Hides all "overlay" elements
+                document.getElementById( 'img-gallery-close' ).addEventListener( 'click', function( event ){
+                    viewer.dom.style.display = 'none';
+                    gallery.dom.style.display = 'none';
+                    document.getElementById( 'img-gallery-close' ).style.display = 'none';
+                    document.body.classList.toggle( 'no-scroll' );
+                }, false );
+                
                 // Calculate width/height. Thumbnails width/height ratio are 1:1
                 folder.titleWidth = Number( ( folder.dom.offsetWidth ) / Number( folder.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
                 folder.titleHeight = 40;
@@ -98,11 +106,9 @@ var ImageGallery = function(){
             // Only performs click event if user have selected gallery from folders
             // gallery.current will be initialized when user selectes gallery
             if( gallery.current != null ){
-                // Get click position
-                var posX = event.pageX - this.offsetLeft;
                 // Check if click position is on left or right side of viewer
                 // Also checks if there's more images to left/right by using gallery.current
-                if( posX < viewer.widthHalf ){
+                if( ( event.pageX - this.offsetLeft ) < viewer.widthHalf ){
                     if( gallery.current - 1 > 0 ){
                         eventFire( document.querySelector( '.thumb-nro-' +  --gallery.current ), 'click' );
                     }
@@ -136,10 +142,13 @@ var ImageGallery = function(){
             folderContainer.addEventListener( 'click', function( event ){
                 event.preventDefault();
                 
+                // Version 3 sets elements display from none to block. Also removes scrolling from body
                 if( version === 3 ){
                     viewer.dom.style.display = 'block';
                     viewer.widthHalf = viewer.dom.offsetWidth / 2;
                     gallery.dom.style.display = 'block';
+                    document.getElementById( 'img-gallery-close' ).style.display = 'block';
+                    document.body.classList.toggle( 'no-scroll' );
                 }
                 
                 var clickedFolder = this.getAttribute( 'folder' );
@@ -190,12 +199,15 @@ var ImageGallery = function(){
                 // There's one extra "container" inside img-gallery-thumbs for creating vertical overflow
                 var preview = document.createElement( 'div' );
                 
-                // Changes removes old 'selected' and sets this as selected
-                if ( folder.selected != null ){
-                    folder.selected.className = folder.selected.className.replace( /\bselected\b/, '' );
+                if( version != 3){
+                    // Changes removes old 'selected' and sets this as selected
+                    if ( folder.selected != null ){
+                        folder.selected.className = folder.selected.className.replace( /\bselected\b/, '' );
+                    }
+                    this.className += ' selected';
+                    folder.selected = this;
                 }
-                this.className += ' selected';
-                folder.selected = this;
+                
                 
                 // Simulate click on first thumnail to fill image-viewer
                 eventFire( document.querySelector( '.thumb-nro-' + ( gallery.current ) ), 'click' );
