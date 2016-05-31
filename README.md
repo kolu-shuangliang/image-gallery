@@ -2,6 +2,14 @@
 
 ## Still developing! ##
 
+Check out some versions here.
+
+* [Version 1](http://kolu-shuangliang.xyz/image-gallery/version_1.html)
+
+* [Version 2](http://kolu-shuangliang.xyz/image-gallery/version_2.html)
+
+* [Version 3](http://kolu-shuangliang.xyz/image-gallery/version_3.html)
+
 ### Limits ###
 Folder structure only support 1 folder depth.
 
