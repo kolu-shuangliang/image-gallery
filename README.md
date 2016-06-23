@@ -2,13 +2,9 @@
 
 ## Still developing! ##
 
-Check out some versions here.
+Only single version now ( version 3 ).
 
-* [Version 1](http://kolu-shuangliang.xyz/image-gallery/version_1.html)
-
-* [Version 2](http://kolu-shuangliang.xyz/image-gallery/version_2.html)
-
-* [Version 3](http://kolu-shuangliang.xyz/image-gallery/version_3.html)
+Other versions feel little too wonky. Requires too much for on page for viewer and thumbnails
 
 ### Limits ###
 Folder structure only support 1 folder depth.
@@ -19,37 +15,53 @@ images/gallery/flower/ -> creates gallery named flower with images inside flower
 
 images/gallery/cake/creamcake/ -> fails.
 
-### Version 1. Works somehow but still working on it. ###
+## Usage ##
 
-Version 1 requires width/height elements from attributes.
+Check index.html for includes.
 
-Example in version_1.html
+Execute ´images/generate-folders-json.php´.
 
-1. Put folders/images inside images/gallery
+## ? ##
 
-2. Generate folder structure using generate-folders-json.php
+### Folder element ###
+<pre>
+div.folder-container
+    width/height
+        Calculated at init.
+        Maybe recalculate on resize?
+    attributes
+        folder
+            this folder's name
+    click event
+        function: folderClickEvent
+    elements
+        div.title
+            title/folder name,
+        div.image-container
+            contain image element that scales to this this size.
+</pre>
 
-3. Include css/img-gallery.css, js/img-gallery.js and generated json file (located in images folder).
-
-4. Create required HTML elements and set their attributes.
-
-5. Sets required varibles inside script tag at end of the body.
-
-### Version 2. Works somehow but still working on it. ###
-
-Version 2 inherit width/height from parent elements.
-
-Example in version_2.html
-
-1. Put folders/images inside images/gallery
-
-2. Generate folder structure using generate-folders-json.php
-
-3. Include css/img-gallery.css, js/img-gallery.js and generated json file (located in images folder).
-
-4. Create required HTML elements and set their attributes.
-
-5. Sets required varibles inside script tag at end of the body.
+### file element ###
+<pre>
+div.overflow-container
+    width
+        calculated by JavaScript depending on how many thumbnails there are.
+    height
+        Take from parent div.image-gallery-files
+    elements
+        div.image-container.thumb-nro-x
+            width/height
+                Calculated by JavaScript
+            attributes
+                thumb
+                    id number. same as x from this class thumb-nro-x
+                folder
+                    Folder name. Used to open original file.
+                file
+                    File name. Used to open original file.
+            click event
+                function: fileClickEvent
+</pre>
 
 ### Generated "json" structure ###
 <pre>

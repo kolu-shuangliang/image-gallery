@@ -4,11 +4,10 @@ var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 
 gulp.task('default', ['styles'], function () {
-
     browserSync.init({
         server: {
             baseDir: './',
-            index: 'version_3.html'
+            index: 'index.html'
         }
     });
 
@@ -19,7 +18,6 @@ gulp.task('default', ['styles'], function () {
 
     gulp.watch('index.html').on('change', browserSync.reload);
     gulp.watch('js/**/*.js').on('change', browserSync.reload);
-
 });
 
 gulp.task('styles', function () {
