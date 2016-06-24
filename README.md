@@ -4,7 +4,7 @@
 
 Only single version now ( version 3 ).
 
-Other versions feel little too wonky. Requires too much for on page for viewer and thumbnails
+Other versions feel little too wonky. Requires too much HTML for viewer and thumbnails
 
 ### Limits ###
 Folder structure only support 1 folder depth.
