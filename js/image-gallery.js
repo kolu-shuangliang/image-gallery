@@ -41,10 +41,18 @@ var ImageGallery = function(){
         location = galleryLocation;
 
         // Calculate width/height. Thumbnails width/height ratio are 1:1
-        folders.titleWidth = Number( ( folders.dom.offsetWidth ) / Number( folders.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
-        folders.titleHeight = 40;
-        folders.thumbWidth =  folders.titleWidth;
-        folders.thumbHeight = folders.titleWidth;
+        if(folders.dom.getAttribute('ig-fpr')){
+            folders.titleWidth = Number( folders.dom.offsetWidth / Number( folders.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
+            folders.titleHeight = 40;
+            folders.thumbWidth =  folders.titleWidth;
+            folders.thumbHeight = folders.titleWidth;
+        }
+        if(folders.dom.getAttribute('thumb-w') && folders.dom.getAttribute('thumb-h')){
+            folders.titleWidth = Number(folders.dom.getAttribute('thumb-w'));
+            folders.titleHeight = 40;
+            folders.thumbWidth = folders.titleWidth;
+            folders.thumbHeight = Number( folders.dom.getAttribute('thumb-h'));
+        }
 
         // Calculate half width of viewer element for click event
         viewer.widthHalf = viewer.dom.offsetWidth / 2;
