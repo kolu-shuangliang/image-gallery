@@ -203,7 +203,6 @@ var ImageGallery = function () {
         if (files.selected != null) {
             files.selected.className = files.selected.className.replace(/\bselected\b/, '');
         }
-
         this.className += ' selected';
         files.selected = this;
     }

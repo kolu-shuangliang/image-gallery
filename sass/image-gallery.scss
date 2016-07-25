@@ -24,11 +24,15 @@
     width: 100%;
     overflow: auto;
     
-    display: table;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: stretch;
     
     .folder-container{
         float: left;
-        background-color: lightgrey;
+        border: 2px dotted black;
         
         .title{
             width: 100%;
@@ -51,13 +55,12 @@
             }
         }
     }
-    
-    .folder-container:not(.selected):hover{
-        border: 2px solid black;
+    .folder-container:nth-child(even){
+        background-color: #e6e6e6;
     }
     
-    .selected{
-        border: 3px solid cornflowerblue;
+    .folder-container:hover{
+        border: 2px solid black;
     }
 }
 
