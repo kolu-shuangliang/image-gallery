@@ -1,7 +1,11 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var fs = require('fs');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
+
+var folders = scanGallery('images/gallery');
+fs.writeFile('./images/folder-structure.js', 'var folderStructure = ' + JSON.stringify(folders));
 
 gulp.task('default', ['styles'], function () {
     browserSync.init({
@@ -29,3 +33,19 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('./css'))
         .pipe(browserSync.stream());
 });
+
+function scanGallery(gallery) {
+	console.log('Scanning folders inside ' + gallery + '\n');
+
+	var result = {};
+
+	var folders = fs.readdirSync(gallery);
+
+	for (var i = 0; i < folders.length; i++) {
+		var files = fs.readdirSync(gallery + '/' + folders[i]);
+
+		result[folders[i]] = files;
+	}
+
+	return result;
+}
