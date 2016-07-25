@@ -1,30 +1,26 @@
-var ImageGallery = function(){
+var ImageGallery = function () {
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     // VARIABLES
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     var location = null;
-    
+
     var viewer = {
-        dom: initViewer(),
+        dom: init_viewer(),
         widthHalf: null
     };
     var closeButton = {
-        dom: initCloseButton()
+        dom: init_close_button()
     };
     var files = {
-        dom: initFiles(),
-        width: null,
-        height: null,
-        current: 1,
+        dom: document.getElementById('ig-thumbnail-container'),
+        current: 0,
         max: 0,
         selected: null
     };
     var folders = {
-        dom: initFolders(),
-        titleWidth: null,
-        titleHeight: null,
-        thumbWidth: null,
-        thumbHeight: null,
+        dom: document.getElementById('ig-container'),
+        ipr: null,
+        minWidth: null,
         selected: null
     };
 
@@ -34,29 +30,20 @@ var ImageGallery = function(){
     // PUBLIC FUNCTIONS
     //
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-    function init( galleryLocation ){
-        console.log( 'Initializing Image Gallery!' );
-        console.log( '-- Location: [ ' + galleryLocation + ' ] ' );
-        
+    function init(galleryLocation) {
+        console.log('Initializing Image Gallery!');
+        console.log('-- Location: [ ' + galleryLocation + ' ] ');
+
         location = galleryLocation;
 
         // Calculate width/height. Thumbnails width/height ratio are 1:1
-        if(folders.dom.getAttribute('ig-fpr')){
-            folders.titleWidth = Number( folders.dom.offsetWidth / Number( folders.dom.getAttribute( 'ig-fpr' ) ) ) - 10;
-            folders.titleHeight = 40;
-            folders.thumbWidth =  folders.titleWidth;
-            folders.thumbHeight = folders.titleWidth;
-        }
-        if(folders.dom.getAttribute('thumb-w') && folders.dom.getAttribute('thumb-h')){
-            folders.titleWidth = Number(folders.dom.getAttribute('thumb-w'));
-            folders.titleHeight = 40;
-            folders.thumbWidth = folders.titleWidth;
-            folders.thumbHeight = Number( folders.dom.getAttribute('thumb-h'));
-        }
+        folders.ipr = Number( folders.dom.getAttribute( 'ig-fpr' ) );
+        folders.minWidth = Number( folders.dom.getAttribute( 'ig-w' ) );
+        folders.titleHeight = 40;
 
         // Calculate half width of viewer element for click event
-        viewer.widthHalf = viewer.dom.offsetWidth / 2;
-        
+        viewer.widthHalf = document.body.offsetWidth / 2;
+
         // Generate DOM content for img-gallery-folders
         generateImageGallery();
     }
@@ -67,198 +54,179 @@ var ImageGallery = function(){
     // PRIVATE FUNCTIONS
     //
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-    
+
     // Initialize viewer and close viewer button.
     // returns viewer at end.
-    function initViewer(){
-        var tempEle = document.createElement('div');
-        document.body.appendChild( tempEle );
-        tempEle.id = 'image-gallery-viewer';
-        tempEle.addEventListener( 'click', function( event ){
+    function init_viewer() {
+        var tempEle = document.getElementById('ig-viewer');
+
+        tempEle.addEventListener('click', function (event) {
             event.preventDefault();
             event.stopPropagation();
             // Check if click position is on left or right side of viewer
             // Also checks if there's more images to left/right by using folders.current
-            if( ( event.pageX - this.offsetLeft ) < viewer.widthHalf && ( files.current - 1 ) > 0 ){
-                eventFire( document.querySelector( '.thumb-nro-' + --files.current ), 'click' );
+            if ((event.pageX - this.offsetLeft) < viewer.widthHalf && files.current - 1 >= 0) {
+                eventFire(files.dom.querySelector('[nro="' + --files.current + '"]'), 'click');
             }
-            else if( files.current + 1 <= files.max ){
-                eventFire( document.querySelector( '.thumb-nro-' + ++files.current ), 'click' );
+            if ((event.pageX - this.offsetLeft) >= viewer.widthHalf && files.current + 1 < files.max) {
+                eventFire(files.dom.querySelector('[nro="' + ++files.current + '"]'), 'click');
             }
-        }, false );
+        }, false);
+
+        window.addEventListener('resize', function () { viewer.widthHalf = document.body.offsetWidth / 2; });
+
         return tempEle;
     }
     // Initialize button that closes viewer when it's visible.
-    function initCloseButton(){
-        var tempEle = document.createElement('div');
-        document.body.appendChild( tempEle );
-        tempEle.id = 'image-gallery-close';
-        tempEle.addEventListener( 'click', function( event ){
+    function init_close_button() {
+        var tempEle = document.getElementById('ig-close');
+        tempEle.addEventListener('click', function (event) {
             viewer.dom.style.display = 'none';
             files.dom.style.display = 'none';
-            this.style.display = 'none';
+            closeButton.dom.style.display = 'none';
 
             // Empty files thumbnails
-            while( files.dom.firstChild ){
-                files.dom.removeChild( files.dom.firstChild );
+            while (files.dom.firstChild) {
+                files.dom.removeChild(files.dom.firstChild);
             }
             // Reset files counters
-            files.current = 1;
+            files.current = 0;
             files.max = 0;
-        }, false );
+        }, false);
         return tempEle;
-    }
-
-    // Initialize file elements.
-    // List all files inside selected folder
-    function initFiles(){
-        var tempEle = document.createElement('div');
-        tempEle.id = 'image-gallery-files';
-        document.body.appendChild( tempEle );
-
-        return tempEle;
-    }
-
-    // Initialize folders. Just return DOM element with #image-gallery-folders.
-    function initFolders(){
-        return document.getElementById( 'image-gallery-folders' );
-    }
-
-    // Simulate event on element
-    function eventFire( element, eventType ){
-        if ( element.fireEvent ) {
-            element.fireEvent( 'on' + eventType );
-        }
-        else {
-            var eventObject = document.createEvent( 'Events' );
-            eventObject.initEvent( eventType, true, false );
-            element.dispatchEvent( eventObject );
-        }
     }
     // Generates image gallery elements.
-    function generateImageGallery(){
-        for( var key in folderStructure.structure ){
+    function generateImageGallery() {
+        for (var key in folderStructure.structure) {
             // Create container for this folder
-            var folderContainer = document.createElement( 'div' );
-            folders.dom.appendChild( folderContainer );
-            folderContainer.className = 'folder-container';
-            folderContainer.style.width = folders.titleWidth + 'px';
-            folderContainer.style.height = ( folders.titleHeight + folders.thumbHeight ) + 'px';
-            folderContainer.setAttribute( 'folder', key );
-            folderContainer.addEventListener( 'click', folderClickEvent, false );
-        
+            var folder = document.createElement('div');
+            folders.dom.appendChild(folder);
+            folder.style.minWidth = folders.minWidth + 'px';
+            folder.style.width = 'calc(100% / ' + folders.ipr + ')';
+            folder.className = 'folder-container';
+            folder.setAttribute('folder', key);
+
             // Create title element for this folder
-            var title = document.createElement( 'div' );
-            folderContainer.appendChild( title );
-            title.style.width = folders.titleWidth + 'px';
-            title.style.height = folders.titleHeight + 'px';
-            title.style.lineHeight = folders.titleHeight + 'px';
+            var title = document.createElement('div');
+            folder.appendChild(title);
             title.className = 'title';
-            title.innerHTML = key;
+            title.textContent = key;
             title.title = key;
-            
+
             // Create image container for this folder
-            var imgContainer = document.createElement( 'div' );
-            folderContainer.appendChild( imgContainer );
-            imgContainer.style.width = folders.thumbWidth + 'px';
-            imgContainer.style.height = folders.thumbHeight + 'px';
+            var imgContainer = document.createElement('div');
+            folder.appendChild(imgContainer);
             imgContainer.className = 'image-container';
             imgContainer.title = key;
-            
+
+            var pusher = document.createElement('div');
+            imgContainer.appendChild(pusher);
+            pusher.className = 'pusher';
+
             // Create image for this folder
             var image = new Image();
-            image.className = 'image-gallery-img';
+            image.className = 'ig-img';
             // Appends image into imgContainer on image load
-            image.addEventListener( 'load', onLoadAppend( imgContainer, image ) );
+            image.addEventListener('load', onLoadAppend(imgContainer, image));
             // Gets first image from this folder as thumbnail
-            for( var imageFile in folderStructure.structure[ key ] ){
+            for (var imageFile in folderStructure.structure[key]) {
                 image.src = location + '/thumb_gallery/' + key + '/' + imageFile;
                 break;
             }
+
+
+            folder.addEventListener('click', function(){
+                // Show viewer, closeButton and files.
+                viewer.dom.style.display = 'block';
+                files.dom.style.display = 'block';
+                closeButton.dom.style.display = 'block';
+
+                // Calculate files thumbnails size
+                var size = files.dom.offsetHeight;
+
+                // Set selected folder
+                folders.selected = this.getAttribute('folder');
+
+                // Start constructing new files thumbnails for selected folder
+                var overflowContainer = document.createElement('div');
+                overflowContainer.style.height = size + 'px';
+                overflowContainer.className = 'overflow-container';
+                files.dom.appendChild(overflowContainer);
+                // Generate all thumbnails inside selected folder.
+                for (var file in folderStructure.structure[folders.selected]) {
+                    if (folderStructure.structure[folders.selected][file] === 'file') {
+                        // Create and sets attribtues for image container div element
+                        var imgContainer = document.createElement('div');
+                        overflowContainer.appendChild(imgContainer);
+                        imgContainer.style.width = size + 'px';
+                        imgContainer.style.height = size + 'px';
+                        imgContainer.className = 'image-container';
+                        
+                        imgContainer.setAttribute('nro', files.max);
+                        imgContainer.setAttribute('file', file);
+                        imgContainer.addEventListener('click', fileClickEvent, false);
+
+                        var image = new Image();
+                        image.className = 'ig-img';
+                        image.addEventListener('load', onLoadAppend(imgContainer, image));
+                        image.src = location + '/thumb_gallery/' + folders.selected + "/" + file;
+                        
+                        files.max++;
+                    }
+                }
+
+                // Calculate overflow-container width while adding total of 10px left/right margin to all images
+                overflowContainer.style.width = (files.max * (size + 10)) + 'px';
+                // Simulate click on first thumbnail to fill viewer
+                eventFire(files.dom.querySelector('[nro="'+(files.current)+'"]'), 'click');
+            }, false);
         }
     }
 
-    function folderClickEvent( event ){
-        event.preventDefault();
-        event.stopPropagation();
-        // Show viewer, closeButton and files.
-        viewer.dom.style.display = 'block';
-        viewer.widthHalf = viewer.dom.offsetWidth / 2;
-        files.dom.style.display = 'block';
-        closeButton.dom.style.display = 'block';
-        // Calculate files thumbnails width/height
-        files.height = files.dom.offsetHeight;
-        files.width = files.height;
 
-        var selectedFolder = this.getAttribute( 'folder' );
-        
-        // Start constructing new files thumbnails for selected folder
-        var overflowContainer = document.createElement( 'div' );
-        overflowContainer.style.height = files.height + 'px';
-        overflowContainer.className = 'overflow-container';
-        files.dom.appendChild( overflowContainer );
-        // Generate all thumbnails inside selected folder.
-        for( var file in folderStructure.structure[ selectedFolder ] ){
-            if( folderStructure.structure[ selectedFolder ][ file ] === 'file' ){
-                // Raise max thumb, also uses it as counter during foreach loop
-                files.max++;
-                // Create and sets attribtues for image container div element
-                var imgContainer = document.createElement( 'div' );
-                overflowContainer.appendChild( imgContainer );
-                imgContainer.style.width = files.width + 'px';
-                imgContainer.style.height = files.height + 'px';
-                imgContainer.className = 'image-container';
-                imgContainer.className += ' thumb-nro-' + files.max;
-                imgContainer.setAttribute( 'thumb', files.max );
-                imgContainer.setAttribute( 'folder', selectedFolder );
-                imgContainer.setAttribute( 'file', file );
-                imgContainer.addEventListener( 'click', fileClickEvent, false );
-                
-                var image = new Image();
-                image.className = 'image-gallery-img';
-                image.addEventListener( 'load', onLoadAppend( imgContainer, image ) );
-                image.src = location + '/thumb_gallery/' + selectedFolder + "/" + file;
-            }
-        }
-        
-        // Calculate overflow-container width while adding total of 10px left/right margin to all images
-        overflowContainer.style.width = ( files.max * ( files.width + 10 ) ) + 'px';
-        // Simulate click on first thumbnail to fill viewer
-        eventFire( document.querySelector( '.thumb-nro-' + ( files.current ) ), 'click' );
-    }
-    
-    function fileClickEvent( event ){
+    function fileClickEvent(event) {
         event.preventDefault();
-                            
+
         this.scrollIntoView();
-        
+
         // Reset img-gallery-viewer
-        while( viewer.dom.firstChild ){
-            viewer.dom.removeChild( viewer.dom.firstChild );
+        while (viewer.dom.firstChild) {
+            viewer.dom.removeChild(viewer.dom.firstChild);
         }
-        
+
         // Loads original image into image-viewer
         var image = new Image();
-        image.className = 'image-gallery-img';
-        image.addEventListener( 'load', onLoadAppend( viewer.dom, image ) );
-        image.src = location + '/gallery/' + this.getAttribute( 'folder' ) + '/' + this.getAttribute( 'file' );
-        
+        image.className = 'ig-img';
+        image.addEventListener('load', onLoadAppend(viewer.dom, image));
+        image.src = location + '/gallery/' + folders.selected + '/' + this.getAttribute('file');
+
         viewer.dom.scrollIntoView();
-        
-        files.current = Number( this.getAttribute( 'thumb' ) );
-        
+
+        files.current = Number(this.getAttribute('nro'));
+
         // Changes removes old 'selected' and sets this as selected
-        if ( files.selected != null ){
-            files.selected.className = files.selected.className.replace( /\bselected\b/, '' );
+        if (files.selected != null) {
+            files.selected.className = files.selected.className.replace(/\bselected\b/, '');
         }
-        
+
         this.className += ' selected';
         files.selected = this;
     }
-    
+
     // Onload function that add element to target
-    function onLoadAppend( target, element ){
-        target.appendChild( element );
+    function onLoadAppend(target, element) {
+        target.appendChild(element);
+    }
+    // Simulate event on element
+    function eventFire(element, eventType) {
+        if (element.fireEvent) {
+            element.fireEvent('on' + eventType);
+        }
+        else {
+            var eventObject = document.createEvent('Events');
+            eventObject.initEvent(eventType, true, false);
+            element.dispatchEvent(eventObject);
+        }
     }
     // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
     // RETURN - Public functions needs to be returned
@@ -266,4 +234,4 @@ var ImageGallery = function(){
     return {
         init: init
     }
-}();
+} ();

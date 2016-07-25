@@ -1,5 +1,7 @@
-@charset "UTF-8";
-.image-gallery-img {
+*, *::before, *::after {
+  box-sizing: border-box; }
+
+.ig-img {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -9,31 +11,41 @@
   max-width: 100%;
   max-height: 100%;
   width: auto;
-  height: auto; }
+  height: auto;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
 
-#image-gallery-folders {
+#ig-container {
   margin: 0 auto;
+  width: 100%;
   overflow: auto;
-  display: table;
-  width: 100%; }
-  #image-gallery-folders .folder-container {
+  display: table; }
+  #ig-container .folder-container {
     float: left;
-    margin: 5px;
     background-color: lightgrey; }
-    #image-gallery-folders .folder-container .title {
+    #ig-container .folder-container .title {
+      width: 100%;
+      height: 40px;
+      float: left;
+      line-height: 40px;
       font-size: 20px;
       overflow: hidden;
       text-align: center; }
-    #image-gallery-folders .folder-container .image-container {
-      position: relative; }
-  #image-gallery-folders .folder-container:not(.selected):hover {
-    margin: 3px;
+    #ig-container .folder-container .image-container {
+      position: relative;
+      float: left;
+      width: 100%; }
+      #ig-container .folder-container .image-container .pusher {
+        margin-top: 100%; }
+  #ig-container .folder-container:not(.selected):hover {
     border: 2px solid black; }
-  #image-gallery-folders .selected {
-    margin: 2px;
+  #ig-container .selected {
     border: 3px solid cornflowerblue; }
 
-#image-gallery-files {
+#ig-thumbnail-container {
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -41,56 +53,43 @@
   height: 20vh;
   overflow-y: hidden;
   overflow-x: scroll;
-  display: none;
-  z-index: 9999; }
-  #image-gallery-files .overflow-container {
+  z-index: 1000; }
+  #ig-thumbnail-container .overflow-container {
     position: relative;
     background-color: lightgrey; }
-    #image-gallery-files .overflow-container .image-container {
+    #ig-thumbnail-container .overflow-container .image-container {
       position: relative;
       float: left;
       margin: 0 5px; }
-    #image-gallery-files .overflow-container .image-container:not(.selected):hover {
+    #ig-thumbnail-container .overflow-container .image-container:not(.selected):hover {
       margin-left: 3px;
       margin-right: 3px;
       border-left: 2px solid black;
       border-right: 2px solid black; }
-    #image-gallery-files .overflow-container .selected {
+    #ig-thumbnail-container .overflow-container .selected {
       margin-left: 2px;
       margin-right: 2px;
       border-left: 3px solid cornflowerblue;
       border-right: 3px solid cornflowerblue; }
 
-#image-gallery-close {
+#ig-close {
+  display: none;
   position: fixed;
   top: 10px;
   right: 20px;
-  display: none;
   font-size: 40px;
   color: white;
   padding: 0 10px;
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   cursor: pointer;
-  z-index: 10000; }
+  z-index: 1001; }
 
-#image-gallery-close::before {
-  content: "✖"; }
-
-#image-gallery-viewer {
+#ig-viewer {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 80vh;
-  display: none;
   background-color: rgba(50, 50, 50, 0.8);
-  /* Prevent selection */
-  -webkit-user-select: none;
-  /* webkit (safari, chrome) browsers */
-  -moz-user-select: none;
-  /* mozilla browsers */
-  -khtml-user-select: none;
-  /* webkit (konqueror) browsers */
-  -ms-user-select: none;
-  /* IE10+ */
-  z-index: 9999; }
+  z-index: 1000; }
