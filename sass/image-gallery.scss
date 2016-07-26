@@ -74,11 +74,11 @@
     height: 20vh;
     overflow-y: hidden;
     overflow-x: scroll;
+    background-color: #ffffff;
     z-index: 1000;
     
     .overflow-container{
         position: relative;
-        background-color: lightgrey;
         
         .image-container{
             position: relative;
@@ -96,8 +96,8 @@
         .selected{
             margin-left: 2px;
             margin-right: 2px;
-            border-left: 3px solid cornflowerblue;
-            border-right: 3px solid cornflowerblue;
+            border-left: 3px solid #4da9ff;
+            border-right: 3px solid #4da9ff;
         }
     }
 }
